@@ -29,14 +29,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'
 
       - name: Install dependencies
         run: |
           cd backend
-          npm cache clean --force
-          npm ci
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Run tests
         run: |
@@ -67,14 +65,12 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-          cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'
 
       - name: Install dependencies
         run: |
           cd backend
-          npm cache clean --force
-          npm ci
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build project
         run: |
@@ -108,14 +104,12 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://npm.pkg.github.com'
-          cache: 'npm'
-          cache-dependency-path: 'backend/package-lock.json'
 
       - name: Install dependencies
         run: |
           cd backend
-          npm cache clean --force
-          npm ci
+          rm -rf node_modules package-lock.json
+          npm install
 
       - name: Build project
         run: |
