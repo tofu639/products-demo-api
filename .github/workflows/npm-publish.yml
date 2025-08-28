@@ -114,10 +114,14 @@ jobs:
         run: |
           if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
             echo "⚠️ NPM_TOKEN secret not configured, skipping NPM publish"
-            exit 78
+            echo "SKIP_NPM_PUBLISH=true" >> $GITHUB_ENV
+          else
+            echo "✅ NPM_TOKEN is configured"
+            echo "SKIP_NPM_PUBLISH=false" >> $GITHUB_ENV
           fi
 
       - name: Publish to npm
+        if: env.SKIP_NPM_PUBLISH != 'true'
         run: |
           cd backend
           npm publish
@@ -127,11 +131,21 @@ jobs:
   publish-gpr:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish_to_gpr == 'true'
+    if: github.event_name == 'workflow_dispatch'
     
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Check publish setting
+        run: |
+          if [ "${{ github.event.inputs.publish_to_gpr }}" = "true" ]; then
+            echo "✅ Publishing to GitHub Package Registry enabled"
+            echo "SKIP_GPR_PUBLISH=false" >> $GITHUB_ENV
+          else
+            echo "⚠️ Publishing to GitHub Package Registry disabled (set publish_to_gpr=true to enable)"
+            echo "SKIP_GPR_PUBLISH=true" >> $GITHUB_ENV
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -165,6 +179,7 @@ jobs:
           npm version ${{ github.event.inputs.version }} --no-git-tag-version
 
       - name: Publish to GitHub Package Registry
+        if: env.SKIP_GPR_PUBLISH != 'true'
         run: |
           cd backend
           npm publish
@@ -185,19 +200,26 @@ jobs:
           echo "Checking Docker secrets..."
           if [ -z "${{ secrets.DOCKER_USERNAME }}" ]; then
             echo "❌ DOCKER_USERNAME secret not configured"
+            echo "SKIP_DOCKER_PUBLISH=true" >> $GITHUB_ENV
           else
             echo "✅ DOCKER_USERNAME secret is configured"
           fi
           if [ -z "${{ secrets.DOCKER_PASSWORD }}" ]; then
             echo "❌ DOCKER_PASSWORD secret not configured"
+            echo "SKIP_DOCKER_PUBLISH=true" >> $GITHUB_ENV
           else
             echo "✅ DOCKER_PASSWORD secret is configured"
+          fi
+          
+          if [ "$SKIP_DOCKER_PUBLISH" != "true" ]; then
+            echo "SKIP_DOCKER_PUBLISH=false" >> $GITHUB_ENV
           fi
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
+        if: env.SKIP_DOCKER_PUBLISH != 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
@@ -215,6 +237,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
 
       - name: Build and push Docker image
+        if: env.SKIP_DOCKER_PUBLISH != 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
