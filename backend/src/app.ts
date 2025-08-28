@@ -26,9 +26,9 @@ class App {
     this.port = parseInt(process.env.PORT || '3000', 10);
     
     this.initializeMiddlewares();
+    this.initializeSwagger();
     this.initializeRoutes();
     this.initializeErrorHandling();
-    this.initializeSwagger();
   }
 
   /**

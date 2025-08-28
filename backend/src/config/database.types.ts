@@ -20,7 +20,7 @@ export interface DatabaseConfig {
 
 export interface DatabaseResult<T = any> {
   recordset: T[];
-  recordsets: T[][];
+  recordsets: any;
   output: Record<string, any>;
   rowsAffected: number[];
 }
