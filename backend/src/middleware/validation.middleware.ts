@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import Joi from 'joi';
-import { AppError } from './error.middleware';
 
 export interface ValidationOptions {
   body?: Joi.ObjectSchema;
@@ -78,12 +77,6 @@ export const validate = (options: ValidationOptions) => {
 
     // If there are validation errors, return bad request
     if (errors.length > 0) {
-      const error = new AppError(
-        'Validation failed',
-        400,
-        'VALIDATION_ERROR'
-      );
-      
       res.status(400).json({
         error: {
           message: 'Validation failed',

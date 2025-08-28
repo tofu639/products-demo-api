@@ -1,5 +1,4 @@
 import { dbConnection } from '../config/database.connection';
-import { PaginationResult } from '../config/database.types';
 import {
   Product,
   ProductQuery,

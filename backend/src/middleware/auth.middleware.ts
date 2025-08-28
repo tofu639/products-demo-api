@@ -126,7 +126,8 @@ export const optionalAuthenticate = async (
 /**
  * Middleware to check if user has specific role (for future use)
  */
-export const authorize = (roles: string[]) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const authorize = (_roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
       res.status(401).json({
@@ -139,7 +140,7 @@ export const authorize = (roles: string[]) => {
     // For now, all authenticated users have access
     // In a real application, you would check user roles here
     // const userRoles = req.user.roles || [];
-    // const hasPermission = roles.some(role => userRoles.includes(role));
+    // const hasPermission = _roles.some(role => userRoles.includes(role));
     
     // if (!hasPermission) {
     //   res.status(403).json({

@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { authService } from '../services/auth.service';
 import { CreateUserDto, LoginDto, JwtPayload } from '../types/auth.types';
 import { AppError, asyncHandler } from '../middleware/error.middleware';
-import { AuthRequest } from '../middleware/auth.middleware';
 import { logger } from '../utils/logger';
 
 export class AuthController {
