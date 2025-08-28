@@ -1,0 +1,53 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Development files
+*.log
+logs/
+coverage/
+
+# Testing
+tests/
+*.test.ts
+*.spec.ts
+jest.config.js
+
+# Development tools
+.eslintrc.js
+.prettierrc
+nodemon.json
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.json
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts (keep dist/ for production)
+# dist/
+
+# Database files
+*.db
+*.sqlite
