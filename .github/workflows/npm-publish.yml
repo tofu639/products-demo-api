@@ -12,6 +12,11 @@ on:
         description: 'Version to publish (leave empty for package.json version)'
         required: false
         type: string
+      publish_to_gpr:
+        description: 'Publish to GitHub Package Registry'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   test:
@@ -55,7 +60,7 @@ jobs:
   publish-npm:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: (github.event_name == 'release' || github.event_name == 'workflow_dispatch') && secrets.NPM_TOKEN != ''
     
     steps:
       - name: Checkout repository
@@ -95,7 +100,7 @@ jobs:
   publish-gpr:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.publish_to_gpr == 'true'
     
     steps:
       - name: Checkout repository
