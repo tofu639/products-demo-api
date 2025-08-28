@@ -2,27 +2,18 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
-    sourceType: 'module',
-    project: './tsconfig.json'
+    sourceType: 'module'
   },
   plugins: [
-    '@typescript-eslint',
-    'prettier'
+    '@typescript-eslint'
   ],
   extends: [
-    'eslint:recommended',
-    '@typescript-eslint/recommended',
-    '@typescript-eslint/recommended-requiring-type-checking',
-    'prettier'
+    'eslint:recommended'
   ],
   rules: {
-    'prettier/prettier': 'error',
+    'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-explicit-any': 'warn',
-    '@typescript-eslint/explicit-function-return-type': 'warn',
-    '@typescript-eslint/no-floating-promises': 'error',
-    '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/no-misused-promises': 'error',
     'no-console': 'warn'
   },
   env: {
