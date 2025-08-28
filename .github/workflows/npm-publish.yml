@@ -80,7 +80,7 @@ jobs:
   publish-npm:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: always() && (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
     
     steps:
       - name: Checkout repository
@@ -131,7 +131,7 @@ jobs:
   publish-gpr:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
+    if: always() && github.event_name == 'workflow_dispatch'
     
     steps:
       - name: Checkout repository
@@ -189,7 +189,7 @@ jobs:
   create-docker-image:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    if: always() && (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
     
     steps:
       - name: Checkout repository
@@ -226,10 +226,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Extract metadata
+        if: env.SKIP_DOCKER_PUBLISH != 'true'
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/products-demo-api
+          images: ${{ secrets.DOCKER_USERNAME || 'testuser' }}/products-demo-api
           tags: |
             type=ref,event=branch
             type=ref,event=pr
