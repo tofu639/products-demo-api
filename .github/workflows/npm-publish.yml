@@ -1,6 +1,14 @@
 name: Publish Node.js Package
 
 on:
+  # Trigger on pushes to main branch
+  push:
+    branches: [ main ]
+  
+  # Trigger on pull requests to main branch
+  pull_request:
+    branches: [ main ]
+  
   # Trigger on new releases
   release:
     types: [published]
