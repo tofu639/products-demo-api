@@ -68,7 +68,7 @@ jobs:
   publish-npm:
     needs: test
     runs-on: ubuntu-latest
-    if: (github.event_name == 'release' || github.event_name == 'workflow_dispatch') && secrets.NPM_TOKEN != ''
+    if: (github.event_name == 'release' || github.event_name == 'workflow_dispatch') && secrets.NPM_TOKEN
     
     steps:
       - name: Checkout repository
