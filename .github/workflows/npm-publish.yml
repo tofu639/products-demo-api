@@ -35,6 +35,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend
+          npm cache clean --force
           npm ci
 
       - name: Run tests
@@ -72,6 +73,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend
+          npm cache clean --force
           npm ci
 
       - name: Build project
@@ -112,6 +114,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd backend
+          npm cache clean --force
           npm ci
 
       - name: Build project
