@@ -68,7 +68,7 @@ jobs:
   publish-npm:
     needs: test
     runs-on: ubuntu-latest
-    if: (github.event_name == 'release' || github.event_name == 'workflow_dispatch') && secrets.NPM_TOKEN
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     
     steps:
       - name: Checkout repository
@@ -97,6 +97,13 @@ jobs:
         run: |
           cd backend
           npm version ${{ github.event.inputs.version }} --no-git-tag-version
+
+      - name: Check NPM Token
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "⚠️ NPM_TOKEN secret not configured, skipping NPM publish"
+            exit 78
+          fi
 
       - name: Publish to npm
         run: |
